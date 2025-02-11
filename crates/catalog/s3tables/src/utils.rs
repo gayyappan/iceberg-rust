@@ -25,11 +25,11 @@ use uuid::Uuid;
 /// Property aws profile name
 pub const AWS_PROFILE_NAME: &str = "profile_name";
 /// Property aws region
-pub const AWS_REGION_NAME: &str = "region_name";
+pub const AWS_REGION_NAME: &str = "s3.region";
 /// Property aws access key
-pub const AWS_ACCESS_KEY_ID: &str = "aws_access_key_id";
+pub const AWS_ACCESS_KEY_ID: &str = "s3.access_key_id";
 /// Property aws secret access key
-pub const AWS_SECRET_ACCESS_KEY: &str = "aws_secret_access_key";
+pub const AWS_SECRET_ACCESS_KEY: &str = "s3.secret_access_key";
 /// Property aws session token
 pub const AWS_SESSION_TOKEN: &str = "aws_session_token";
 
@@ -68,7 +68,7 @@ pub(crate) async fn create_sdk_config(
         let region = Region::new(region_name.clone());
         config = config.region(region);
     }
-
+    //println!("in load_config HERE {:?}****",config);
     config.load().await
 }
 
