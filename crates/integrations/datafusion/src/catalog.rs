@@ -56,7 +56,6 @@ impl IcebergCatalogProvider {
             .iter()
             .flat_map(|ns| ns.as_ref().clone())
             .collect();
-
         let providers = try_join_all(
             schema_names
                 .iter()
@@ -79,6 +78,22 @@ impl IcebergCatalogProvider {
             })
             .collect();
 
+        Ok(IcebergCatalogProvider { schemas })
+    }
+
+    // create catalog for specific namespace
+    pub async fn try_new_with_schema(client: Arc<dyn Catalog>, schema_name: &str) -> Result<Self> {
+        // TODO:
+        // Schemas and providers should be cached and evicted based on time
+        // As of right now; schemas might become stale.
+        let ns_name = NamespaceIdent::new(schema_name.to_string());
+        client.get_namespace(&ns_name).await?;
+
+        let schprovider =
+            IcebergSchemaProvider::try_new(client.clone(), NamespaceIdent::new(schema_name.to_string()))
+                .await?;
+        let mut schemas: HashMap<String, Arc<dyn SchemaProvider>> = HashMap::new();
+        schemas.insert(schema_name.to_string(), Arc::new(schprovider) as Arc<dyn SchemaProvider>);
         Ok(IcebergCatalogProvider { schemas })
     }
 }

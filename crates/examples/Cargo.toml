@@ -29,6 +29,8 @@ iceberg = { workspace = true }
 iceberg-catalog-rest = { workspace = true }
 iceberg-catalog-s3tables = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
+datafusion = { workspace = true }
+iceberg-datafusion = { workspace = true }
 
 [[example]]
 name = "rest-catalog-namespace"
@@ -41,3 +43,7 @@ path = "src/rest_catalog_table.rs"
 [[example]]
 name = "s3tab-example"
 path = "src/mys3tab_test.rs"
+
+[[example]]
+name = "df-s3tab-example"
+path = "src/mys3tab_dftest.rs"
